@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Books</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body class="min-h-screen bg-gray-900 flex flex-col items-center bg-cover bg-center bg-fixed font-sans text-white">
+    <!-- Dark Overlay -->
+    <div class=""></div>
+
+    <!-- Back Button -->
+    <div class="w-full max-w-6xl flex justify-start px-4 mt-6 z-10">
+        <button onclick="window.location.href='/auth/landing'" class="bg-gradient-to-r from-indigo-500 to-purple-500 text-white py-2 px-6 rounded-lg font-semibold shadow-md hover:from-indigo-600 hover:to-purple-600 hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
+            Back
+        </button>
+    </div>
+
+    <!-- Search Form -->
+    <form method="get" action="{% url 'book_list' %}" class="w-full max-w-6xl px-4 my-6 z-10">
+        <div class="flex flex-col sm:flex-row items-center gap-4 bg-white/10 backdrop-blur-md rounded-lg p-4 border border-white/20">
+            <input type="text" name="query" placeholder="Search books..." class="flex-grow py-2 px-4 rounded-lg bg-white/5 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-purple-500 transition-colors duration-200">
+            <button type="submit" class="bg-gradient-to-r from-indigo-500 to-purple-500 text-white py-2 px-6 rounded-lg font-semibold shadow-md hover:from-indigo-600 hover:to-purple-600 hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
+                Search
+            </button>
+            <button type="button" onclick="window.location.href='{% url 'book_list' %}'" class="bg-gradient-to-r from-gray-500 to-gray-600 text-white py-2 px-6 rounded-lg font-semibold shadow-md hover:from-gray-600 hover:to-gray-700 hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
+                Show All
+            </button>
+        </div>
+    </form>
+
+    <!-- Page Title -->
+    <h1 id="page-title" class="text-3xl sm:text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-transparent bg-clip-text mb-8 text-center z-10">
+        Available Books
+    </h1>
+
+    <!-- Book List -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl px-4 pb-12 z-10">
+        {% for book in books %}
+        <a href="{% url 'book_detail' book.id %}" class="book-card bg-white/10 backdrop-blur-md border border-white/20 rounded-lg p-4 flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+            <!-- Book Image -->
+            {% if book.image %}
+            <img src="{{ book.image.url }}" alt="{{ book.title }}" class="w-42 h-48 object-cover rounded-md mb-4 shadow-md">
+            {% else %}
+            <p class="text-gray-300 text-sm mb-4">No image available</p>
+            {% endif %}
+            <!-- Book Details -->
+            <div class="flex-grow flex flex-col justify-between">
+                <p class="text-lg font-semibold text-white line-clamp-2">{{ book.title }}</p>
+                <p class="text-gray-300">{{ book.author }}</p>
+                <p class="text-purple-400 font-bold mt-2">₹{{ book.price }}</p>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Animate page title
+            gsap.fromTo(
+                "#page-title",
+                { y: -50, opacity: 0 },
+                { y: 0, opacity: 1, duration:0.2, ease: "power3.out" }
+            );
+
+            // Animate search form buttons
+            gsap.fromTo(
+                "form button",
+                { y: 30, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.2, stagger: 0.2, ease: "power3.out", delay: 0.2 }
+            );
+
+            // Animate book cards
+            gsap.fromTo(
+                ".book-card",
+                { y: 50, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.2, stagger: 0.2, ease: "power3.out", delay: 0.2 }
+            );
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Book</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen flex flex-col items-center bg-cover bg-center bg-fixed bg-gray-900 font-sans text-white">
+    <!-- Dark Overlay -->
+    <div class=""></div>
+
+    <!-- Navbar -->
+    <nav class="w-full bg-white/10 backdrop-blur-md border-b border-white/20 py-4 px-6 flex justify-between items-center fixed top-0 z-20">
+        <button onclick="window.location.href='/auth/landing'" class="bg-gradient-to-r from-indigo-500 to-purple-500 text-white py-2 px-6 rounded-lg font-semibold shadow-md hover:from-indigo-600 hover:to-purple-600 hover:shadow-lg transition-all duration-300">
+            Home
+        </button>
+        <h1 class="text-2xl sm:text-3xl font-extrabold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">
+            Edit Book
+        </h1>
+        <div class="w-16"></div> <!-- Spacer for balance -->
+    </nav>
+
+    <!-- Form Section -->
+    <div class="mt-24 p-8 bg-white/10 backdrop-blur-md border border-white/20 shadow-lg rounded-2xl w-full max-w-lg mb-12 z-10">
+        <form method="post" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+            <div class="space-y-2">
+                <label class="block font-medium text-lg text-white">Title</label>
+                <input type="text" name="title" value="{{ book.title }}" class="w-full p-3 rounded-lg bg-white/5 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-purple-500 transition-colors duration-200" placeholder="Enter book title" required>
+            </div>
+            <div class="space-y-2">
+                <label class="block font-medium text-lg text-white">Author</label>
+                <input type="text" name="author" value="{{ book.author }}" class="w-full p-3 rounded-lg bg-white/5 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-purple-500 transition-colors duration-200" placeholder="Enter author name" required>
+            </div>
+            <div class="space-y-2">
+                <label class="block font-medium text-lg text-white">Description</label>
+                <textarea name="description" rows="4" class="w-full p-3 rounded-lg bg-white/5 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-purple-500 transition-colors duration-200" placeholder="Describe the book">{{ book.description }}</textarea>
+            </div>
+            <div class="space-y-2">
+                <label class="block font-medium text-lg text-white">Price (₹)</label>
+                <input type="number" name="price" step="0.01" value="{{ book.price }}" class="w-full p-3 rounded-lg bg-white/5 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-purple-500 transition-colors duration-200" placeholder="Enter price" required>
+            </div>
+            {% if book.image %}
+            <div class="flex justify-center">
+                <img src="{{ book.image.url }}" alt="{{ book.title }}" class="w-40 h-60 object-cover rounded-md shadow-md">
+            </div>
+            {% endif %}
+            <div class="space-y-2">
+                <label class="block font-medium text-lg text-white">Image</label>
+                <input type="file" name="image" accept="image/*" class="w-full p-3 rounded-lg bg-white/5 border border-white/20 text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-purple-500 file:text-white file:font-semibold hover:file:bg-purple-600">
+            </div>
+            <button type="submit" class="w-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white py-3 rounded-lg font-semibold shadow-md hover:from-indigo-600 hover:to-purple-600 hover:shadow-lg transition-all duration-300">
+                Save Changes
+            </button>
+        </form>
+    </div>
+</body>
+</html>

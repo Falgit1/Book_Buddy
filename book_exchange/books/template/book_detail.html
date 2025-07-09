@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ book.title }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <!-- <style>
+        body {
+            background-image: url('{% static "images/bg_img.jpg" %}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+    </style> -->
+</head>
+
+<body class="bg-gray-800 min-h-screen flex flex-col items-center p-6">
+    <button onclick="window.location.href='/books'"
+            class="mt-4 mb-3 bg-blue-500 text-white py-2 px-4 rounded-lg font-semibold shadow-md 
+            hover:bg-gray-600 transition-transform duration-300 transform hover:scale-105">
+            Go Back
+    </button>
+    <div class="bg-gray-400 shadow-2xl rounded-lg p-6 max-w-xl w-full">
+        <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ book.title }}</h1>
+        <p class="text-lg text-gray-700"><span class="font-semibold">Author:</span> {{ book.author }}</p>
+        <p class="text-gray-600 mt-2"><span class="font-semibold">Description:</span> {{ book.description }}</p>
+        <p class="text-xl font-semibold text-green-600 mt-4">Price: ₹{{ book.price }}</p>
+
+        {% if book.image %}
+        <div class="flex justify-center mt-4">
+            <img src="{{ book.image.url }}" alt="{{ book.title }}" class="rounded-lg shadow-md max-w-[300px] max-h-[400px]">
+        </div>
+        {% else %}
+        <p class="text-gray-500 mt-2">No image available.</p>
+        {% endif %}
+
+        <button id="get-phone-number"
+            class="mt-6 bg-green-500 text-white py-2 px-4 rounded-lg font-semibold shadow-md 
+            hover:bg-green-600 transition-transform duration-300 transform hover:scale-105">
+            Get Seller's Phone Number
+        </button>
+        <p id="phone-number" class="text-gray-800 font-medium mt-2"></p>
+
+        
+    </div>
+
+    <script>
+        document.getElementById('get-phone-number').addEventListener('click', function () {
+            fetch("{% url 'request_phone_number' book.id %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.phone_number) {
+                        document.getElementById('phone-number').innerText = "Seller's Phone Number: " + data.phone_number;
+                    } else if (data.error) {
+                        document.getElementById('phone-number').innerText = data.error;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+
+        // GSAP animation
+        // document.addEventListener("DOMContentLoaded", function () {
+        //     gsap.from("h1", { opacity: 0, y: -20, duration: 1 });
+        //     gsap.from("p, button", { opacity: 0, y: 20, duration: 1, stagger: 0.2 });
+        // });
+    </script>
+
+</body>
+
+</html>

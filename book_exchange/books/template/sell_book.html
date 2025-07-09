@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sell a Book</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen  bg-gray-900 flex flex-col items-center bg-cover bg-center bg-fixed font-sans text-white" >
+    <!-- Dark Overlay -->
+    <div class="fixed inset-0 bg-black/50 z-0"></div>
+
+    <!-- Back Button -->
+    <div class="w-full max-w-lg flex justify-start px-4 mt-6 z-10">
+        <button onclick="window.location.href='/auth/landing'" class="bg-gradient-to-r from-indigo-500 to-purple-500 text-white py-2 px-6 rounded-lg font-semibold shadow-md hover:from-indigo-600 hover:to-purple-600 hover:shadow-lg transition-all duration-300">
+            Back
+        </button>
+    </div>
+
+    <!-- Form Container -->
+    <div class="bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-2xl w-full max-w-lg mt-6 mb-12 z-10">
+        <h1 class="text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-transparent bg-clip-text text-center mb-6">
+            Sell a Book
+        </h1>
+        <form method="post" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+            <div class="space-y-2">
+                <label class="block font-medium text-lg text-white">Title</label>
+                <input type="text" name="title" class="w-full p-3 rounded-lg bg-white/5 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-purple-500 transition-colors duration-200" placeholder="Enter book title" required>
+            </div>
+            <div class="space-y-2">
+                <label class="block font-medium text-lg text-white">Author</label>
+                <input type="text" name="author" class="w-full p-3 rounded-lg bg-white/5 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-purple-500 transition-colors duration-200" placeholder="Enter author name" required>
+            </div>
+            <div class="space-y-2">
+                <label class="block font-medium text-lg text-white">Description</label>
+                <textarea name="description" rows="4" class="w-full p-3 rounded-lg bg-white/5 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-purple-500 transition-colors duration-200" placeholder="Describe the book"></textarea>
+            </div>
+            <div class="space-y-2">
+                <label class="block font-medium text-lg text-white">Price (₹)</label>
+                <input type="number" name="price" step="0.01" class="w-full p-3 rounded-lg bg-white/5 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-purple-500 transition-colors duration-200" placeholder="Enter price" required>
+            </div>
+            <div class="space-y-2">
+                <label class="block font-medium text-lg text-white">Book Image</label>
+                <input type="file" name="image" accept="image/*" class="w-full p-3 rounded-lg bg-white/5 border border-white/20 text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-purple-500 file:text-white file:font-semibold hover:file:bg-purple-600">
+            </div>
+            <div class="flex items-center space-x-3">
+                <input type="checkbox" name="is_sold" class="w-5 h-5 text-purple-500 border-white/20 bg-white/5 rounded focus:ring-purple-500">
+                <label class="font-medium text-white">Mark as Sold</label>
+            </div>
+            <button type="submit" class="w-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white py-3 rounded-lg font-semibold shadow-md hover:from-indigo-600 hover:to-purple-600 hover:shadow-lg transition-all duration-300">
+                Submit
+            </button>
+        </form>
+    </div>
+</body>
+</html>

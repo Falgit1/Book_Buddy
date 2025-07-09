@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        .bg-custom {
+            background-image: url("{% static 'images/bg_img3.avif' %}");
+        }
+    </style>
+</head>
+
+<body class=" flex flex-col justify-center items-center
+  min-h-screen bg-gray-900 text-white relative ">
+
+    <!-- Background Image -->
+    <div class="absolute inset-0 bg-custom bg-cover bg-center"></div>
+
+    <!-- Dark Overlay for Readability -->
+    <div class="absolute inset-0 bg-black/50"></div>
+
+    <!-- Welcome Text (Outside the Box) -->
+    <h1 id="welcome-text" class="relative z-10 text-center text-5xl text-white font-bold mb-6 drop-shadow-lg opacity-0 mt-[-200px]">
+        Welcome to the Book Exchange Platform
+    </h1>
+
+    <!-- Main Content Container (Box Below) -->
+    <div id="login-box" class="relative z-10 p-8 rounded-xl 
+        w-full max-w-sm text-center
+         ">
+
+        <ul class="space-y-4">
+            <li>
+                <a href="{% url 'register' %}" 
+                   class="block w-full bg-blue-500 text-white py-3 rounded-lg font-semibold shadow-md hover:bg-blue-600 hover:scale-105 transition transform duration-300">
+                    Register
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'login' %}" 
+                   class="block w-full bg-green-500 text-white py-3 rounded-lg font-semibold shadow-md hover:bg-green-600 hover:scale-105 transition transform duration-300">
+                    Login
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'forgot_password' %}" 
+                   class="text-white-800 hover:underline">
+                    Forgot Password?
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- GSAP Animation -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            gsap.fromTo("#welcome-text", 
+                { x: -200, opacity: 0 }, 
+                { x: 0, opacity: 1, duration: 1, ease: "power3.out" }
+            );
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+            gsap.fromTo("#login-box",
+                { x: 200, opacity: 0 },
+                { x: 0, opacity: 1, duration: 1, ease: "power3.out" }
+            );
+        })
+
+    </script>
+
+</body>
+</html>

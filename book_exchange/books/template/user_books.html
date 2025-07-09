@@ -1,0 +1,137 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Books</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+
+<body class="min-h-screen flex flex-col bg-gray-800 items-center bg-cover bg-center bg-fixed font-sans text-white">
+    <!-- Dark Overlay -->
+    <div class="fixed inset-0 bg-black/50 z-0"></div>
+
+    <!-- Navbar -->
+    <nav
+        class="w-full bg-white/10 backdrop-blur-md border-b border-white/20 py-4 px-6 flex justify-between items-center fixed top-0 z-20">
+        <button id="home-btn" onclick="window.location.href='/auth/landing'"
+            class="bg-gradient-to-r from-indigo-500 to-purple-500 text-white py-2 px-6 rounded-lg font-semibold shadow-md hover:from-indigo-600 hover:to-purple-600 hover:shadow-lg transition-all duration-300">
+            Home
+        </button>
+        <h1 id="page-title"
+            class="text-2xl sm:text-3xl font-extrabold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">
+            Your Books
+        </h1>
+        <div class="w-16"></div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 mt-24 pb-12 z-10">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for book in books %}
+            <div
+                class="book-card bg-gray-500 border border-white/20 rounded-lg p-4 flex flex-col items-center shadow-md hover:shadow-xl transition-all duration-300 relative">
+                {% if book.image %}
+                <img src="{{ book.image.url }}" alt="{{ book.title }}"
+                    class="w-42 h-60 object-cover rounded-md mb-4 shadow-md">
+                {% else %}
+                <img src="{% static 'images/book_placeholder.jpg' %}" alt="Placeholder Book"
+                    class="w-40 h-60 object-cover rounded-md mb-4 shadow-md">
+                {% endif %}
+
+                <h2 class="text-lg font-semibold text-white line-clamp-2 mb-2">{{ book.title }}</h2>
+
+                <!-- View Record Button -->
+                <button onclick="toggleRecord({{ book.id }})"
+                    class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:from-blue-600 hover:to-blue-700 hover:shadow-lg transition-all duration-300">
+                    View Record
+                </button>
+
+                <!-- Toggle Record Section -->
+                <div id="record-{{ book.id }}"
+                    class="hidden w-full bg-white/5 backdrop-blur-sm border p-3 rounded-lg mt-3">
+                    <h3 class="text-md font-semibold text-gray-200 mb-2">Phone Number Requests</h3>
+                    {% if book.phone_requests %}
+                    <table class="w-full text-left text-sm text-gray-300">
+                        <thead>
+                            <tr>
+                                <th class="pb-1 border-b border-gray-400">User</th>
+                                <th class="pb-1 border-b border-gray-400">Phone</th>
+                                <th class="pb-1 border-b border-gray-400">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for request in book.phone_requests %}
+                            <tr>
+                                <td class="py-1">{{ request.viewer.username }}</td>
+                                <td class="py-1">{{ request.phone_number }}</td>
+                                <td class="py-1 text-xs text-gray-400">{{ request.request_date }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <p class="text-sm text-gray-400">No requests yet.</p>
+                    {% endif %}
+                </div>
+
+                <!-- Edit/Delete Buttons -->
+                <div class="mt-4 flex space-x-3">
+                    <a href="{% url 'edit_book' book.id %}"
+                        class="bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-2 rounded-lg font-semibold hover:from-green-600 hover:to-green-700 hover:shadow-lg transition-all duration-300">
+                        Edit
+                    </a>
+                    <a href="{% url 'delete_book' book.id %}"
+                        class="bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-lg font-semibold hover:from-red-600 hover:to-red-700 hover:shadow-lg transition-all duration-300">
+                        Delete
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-gray-300 text-center col-span-full text-lg">No books found.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Toggle Function Script -->
+    <script>
+        function toggleRecord(bookId) {
+            const record = document.getElementById(`record-${bookId}`);
+            if (record.classList.contains("hidden")) {
+                record.classList.remove("hidden");
+                record.classList.add("block");
+            } else {
+                record.classList.remove("block");
+                record.classList.add("hidden");
+            }
+        }
+    </script>
+
+    <!-- Animation Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            gsap.fromTo(
+                "#page-title",
+                { y: -50, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.1, ease: "power3.out" }
+            );
+
+            gsap.fromTo(
+                "#home-btn",
+                { x: -50, opacity: 0 },
+                { x: 0, opacity: 1, duration: 0.1, ease: "power3.out", delay: 0.1 }
+            );
+
+            gsap.fromTo(
+                ".book-card",
+                { y: 50, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.1, stagger: 0.3, ease: "power3.out", delay: 0.1 }
+            );
+        });
+    </script>
+</body>
+
+</html>

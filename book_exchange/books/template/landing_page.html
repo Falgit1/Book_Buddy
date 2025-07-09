@@ -1,0 +1,155 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Marketplace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        /* Custom Background */
+        .bg-custom {
+            background-image: url("{% static 'images/books and lights.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        /* Frosted Glass Effect for Navbar */
+        .navbar-glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Gradient Button Styling */
+        .btn-gradient {
+            background: linear-gradient(45deg, #4f46e5, #a855f7);
+            transition: all 0.3s ease;
+        }
+        .btn-gradient:hover {
+            background: linear-gradient(45deg, #4338ca, #9333ea);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Card for Book List */
+        .book-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 min-h-screen flex flex-col items-center relative font-sans text-white">
+    <!-- Dark Overlay -->
+    
+    <!-- Navbar -->
+    <nav class="navbar-glass w-full py-4 px-6 flex flex-col md:flex-row justify-between items-center z-10">
+        <div class="flex flex-col md:flex-row md:items-center gap-4">
+            <h1 class="text-2xl md:text-3xl font-bold">Welcome, {{ username }}!</h1>
+            <p class="text-gray-200 text-lg">📞 {{ phone_number }}</p>
+        </div>
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn-gradient text-white py-2 px-6 rounded-lg font-semibold">
+                Logout
+            </button>
+        </form>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="text-center mt-8 z-10">
+        <h1 id="welcome-text" class="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">
+            Read More, Spend Less!
+        </h1>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="relative rounded-lg p-6 md:p-8 w-full max-w-md md:max-w-lg text-center mt-8 z-10">
+        <ul class="space-y-4">
+            <li id="available-books">
+                <a href="{% url 'book_list' %}" class="block w-full btn-gradient text-lg md:text-xl text-white py-3 rounded-lg font-semibold">
+                    View Available Books
+                </a>
+            </li>
+            <li id="sell-book">
+                <a href="{% url 'sell_book' %}" class="block w-full btn-gradient text-lg md:text-xl text-white py-3 rounded-lg font-semibold">
+                    Sell a Book
+                </a>
+            </li>
+            <li id="your-books">
+                <a href="{% url 'user_books' %}" class="block w-full btn-gradient text-lg md:text-xl text-white py-3 rounded-lg font-semibold">
+                    Your Books
+                </a>
+            </li>
+            <li id="view-cart">
+                <a href="{% url 'view_cart' %}" class="block w-full btn-gradient text-lg md:text-xl text-white py-3 rounded-lg font-semibold flex items-center justify-center gap-2">
+                    🛒 View Cart
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Book List Placeholder -->
+    <div class="w-full max-w-4xl mt-12 px-4 z-10">
+        <h2 class="text-2xl md:text-3xl font-semibold text-center mb-6">Available Books</h2>
+
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Example Book Card (Repeat for each book) -->
+            {% for book in books %}
+
+            <a href="{% url 'book_detail' book.id %}" class="book-card rounded-lg p-4 flex flex-col items-center text-center">
+                {% if book.image %}
+                <img src="{{ book.image.url }}" alt="{{ book.title }}" class="w-42 h-48 object-cover rounded-md mb-4">
+                {% else %}
+                <p class="text-gray-300 text-sm mb-4">No image available</p>
+                {% endif %}
+                <h3 class="text-lg font-semibold">{{book.title}}</h3>
+                <p class="text-gray-300">{{book.author}}</p>
+                <p class="text-indigo-400 font-bold">{{book.price}}</p>
+            </a>
+            {% endfor %}
+
+            <!-- Add more book cards dynamically -->
+        </div>
+
+
+        
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Animate welcome text
+            gsap.fromTo(
+                "#welcome-text",
+                { y: -50, opacity: 0 },
+                { y: 0, opacity: 1, duration: 1.5, ease: "power3.out" }
+            );
+
+            // Animate buttons with stagger
+            gsap.fromTo(
+                ".btn-gradient",
+                { y: 30, opacity: 0 },
+                { y: 0, opacity: 1, duration: 1, stagger: 0.2, ease: "power3.out", delay: 0.5 }
+            );
+
+            // Animate book cards
+            gsap.fromTo(
+                ".book-card",
+                { y: 50, opacity: 0 },
+                { y: 0, opacity: 1, duration: 1, stagger: 0.3, ease: "power3.out", delay: 1 }
+            );
+        });
+    </script>
+</body>
+</html>
