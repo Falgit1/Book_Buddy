@@ -4,8 +4,36 @@ A web application built with **Django** that allows users to buy and sell books.
 It features phone number verification using **Twilio**, search powered by **Pinecone**, and responsive UI with **Tailwind CSS**.
 
 ---
+## 📷 Screenshots
 
-![Screenshot](assets/screenshot.png) <!-- Replace with actual image path -->
+### 🏠 Landing Page
+![Landing Page](book_exchange/books/assets/1.png)
+
+---
+
+### 🔐 Login Page
+![View Books Page](book_exchange/books/assets/3.png)
+
+---
+
+### 📚 Home Page
+![Home Page](book_exchange/books/assets/2.png)
+
+---
+
+### 🔍 View Books Page
+![View Books Page](book_exchange/books/assets/4.png)
+
+---
+
+### ✍️ Sell a Book Page
+![Sell a Book](book_exchange/books/assets/5.png)
+
+---
+
+### 📁 Your Books Page
+![Your Books](book_exchange/books/assets/6.png)
+
 
 ## 🚀 Features
 
