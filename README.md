@@ -58,57 +58,52 @@ It features phone number verification using **Twilio**, search powered by **Pine
 
 1. **Clone the repo**
 
-\`\`\`bash
+```bash
 git clone https://github.com/yourusername/your-repo-name.git
 cd your-repo-name
-\`\`\`
+```
 
 2. **Install dependencies**
 
-\`\`\`bash
+```bash
 pip install -r requirements.txt
-\`\`\`
+```
 
 3. **Set up environment variables**
 
 Create a `.env` file and add:
 
-\`\`\`
+```
 TWILIO_ACCOUNT_SID=your_sid
 TWILIO_AUTH_TOKEN=your_token
 TWILIO_PHONE_NUMBER=your_twilio_number
 COHERE_API_KEY=your_cohere_key
 PINECONE_API_KEY=your_pinecone_key
 PINECONE_ENVIRONMENT=your_env
-\`\`\`
+```
 
 4. **Run migrations**
 
-\`\`\`bash
+```bash
 python manage.py makemigrations
 python manage.py migrate
-\`\`\`
+```
 
 5. **Run the server**
 
-\`\`\`bash
+```bash
 python manage.py runserver
-\`\`\`
+```
 
 ---
 
-## 📷 Screenshot
-
-> Add your screenshot to \`assets/screenshot.png\`
-
----
 
 ## 📂 Project Structure
 
-- \`Auth/\` — handles user verification via Twilio
-- \`books/\` — core logic for listing, searching, editing books
-- \`templates/\` — HTML templates
-- \`static/\` — Tailwind assets
+- `Auth/` — handles user verification via Twilio
+- `books/` — core logic for listing, searching, editing books
+- `templates/` — HTML templates
+- `static/` — Tailwind assets
 
 ---
 
